@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:open_file/open_file.dart';
+
+import '../models/extension.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,6 +17,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> {
+  static List<Extension> _extensions = [
+    Extension(extension: "png"),
+    Extension(extension: "jpeg"),
+    Extension(extension: "gif"),
+    Extension(extension: "jpg"),
+    Extension(extension: "bmp"),
+    Extension(extension: "mp4"),
+    Extension(extension: "mp4"),
+    Extension(extension: "avi"),
+    Extension(extension: "mkv"),
+  ];
+  final _items = _extensions
+      .map((extension) =>
+          MultiSelectItem<Extension>(extension, extension.extension!))
+      .toList();
   @override
   void initState() {
     super.initState();
@@ -62,17 +81,44 @@ class _HomeState extends State<HomePage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 32.0),
-            child: SizedBox(
-              height: 50,
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                          const Color.fromARGB(255, 76, 67, 107))),
-                  onPressed: () {},
-                  child: const Text('Escolher Formato ')),
+            padding: const EdgeInsets.only(right: 40.0, left: 40.0, top: 32.0),
+            child: MultiSelectDialogField(
+              items: _items,
+              title: Text("Extensões"),
+              selectedColor: const Color.fromARGB(255, 76, 67, 107),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(0.1),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                border: Border.all(
+                  color: const Color.fromARGB(255, 76, 67, 107),
+                  width: 2,
+                ),
+              ),
+              buttonIcon: Icon(
+                Icons.extension,
+                color: const Color.fromARGB(255, 76, 67, 107),
+              ),
+              buttonText: const Text(
+                "Escolher formato",
+                style: TextStyle(
+                    color: Color.fromARGB(255, 76, 67, 107),
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
+              onConfirm: (results) {
+                //_selectedAnimals = results;
+              },
             ),
+            // child: SizedBox(
+            //   height: 50,
+            //   width: MediaQuery.of(context).size.width * 0.8,
+            //   child: ElevatedButton(
+            //       style: ButtonStyle(
+            //           backgroundColor: MaterialStateProperty.all(
+            //               const Color.fromARGB(255, 76, 67, 107))),
+            //       onPressed: () {},
+            //       child: const Text('Escolher Formato ')),
+            // ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 32.0),
